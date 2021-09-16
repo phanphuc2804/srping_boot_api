@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -19,21 +20,34 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return (List<Employee>) employeeRepository.findAll();
     }
 
     @Override
-    public Employee getEmployeeById(Long employeeId) {
-        return null;
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).get();
     }
 
     @Override
-    public void deleteById(Long employeeId) {
-
+    public void deleteById(Long id) {
+        employeeRepository.deleteById(id);
     }
 
     @Override
-    public Employee updateEmployeeById(Long employeeId, Employee employee) {
-        return null;
+    public Employee updateEmployeeById(Long id, Employee employee) {
+        Employee employeeDB= employeeRepository.findById(id).get();
+
+        if(Objects.nonNull(employee.getFirstName()) && !"".equalsIgnoreCase(employee.getFirstName())){
+            employeeDB.setFirstName(employee.getFirstName());
+        }
+
+        if(Objects.nonNull(employee.getLastName()) && !"".equalsIgnoreCase(employee.getLastName())){
+            employeeDB.setLastName(employee.getLastName());
+        }
+
+        if(Objects.nonNull(employee.getEmail()) && !"".equalsIgnoreCase(employee.getEmail())){
+            employeeDB.setEmail(employee.getEmail());
+        }
+        return employeeRepository.save(employeeDB);
     }
 }
