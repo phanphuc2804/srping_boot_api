@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -19,21 +20,33 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return (List<Employee>) employeeRepository.findAll();
     }
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
-        return null;
+        return employeeRepository.findById(employeeId).get();
     }
 
     @Override
     public void deleteById(Long employeeId) {
-
+        employeeRepository.deleteById(employeeId);
     }
 
     @Override
     public Employee updateEmployeeById(Long employeeId, Employee employee) {
-        return null;
+        Employee employeedb= employeeRepository.findById(employeeId).get();
+        if(Objects.nonNull(employee.getFirstName()) && !"".equalsIgnoreCase(employee.getFirstName())){
+            employeedb.setFirstName(employee.getFirstName());
+        }
+
+        if(Objects.nonNull(employee.getLastName()) && !"".equalsIgnoreCase(employee.getLastName())){
+            employeedb.setLastName(employee.getLastName());
+        }
+
+        if(Objects.nonNull(employee.getEmail()) && !"".equalsIgnoreCase(employee.getEmail())){
+            employeedb.setEmail(employee.getEmail());
+        }
+        return employeeRepository.save(employeedb);
     }
 }
