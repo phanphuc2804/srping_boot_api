@@ -16,9 +16,9 @@ public class SpringBootApiApplication {
     //Save
     private void insertEmployees(EmployeeRepository repository){
         Employee employee = Employee.builder()
-                .firstName("Tuan")
-                .lastName("Dat")
-                .email("vanteonguyen955@gmail.com")
+                .firstName("Phan")
+                .lastName("Hoang Phuc")
+                .email("phucphan@gmail.com")
                 .build();
         repository.save(employee);
 
